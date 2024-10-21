@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helpdesk Scheduling App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w2ui/1.5.0/w2ui.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/w2ui/1.5.0/w2ui.min.js"></script>
+</head>
+<body>
+    <div id="grid" style="width: 100%; height: 400px;"></div>
+
+    <script>
+        $(function () {
+            // Initialize the grid
+            $('#grid').w2grid({
+                name: 'scheduleGrid',
+                header: 'Weekly Schedule Overview',
+                columns: [
+                    { field: 'hour', caption: 'Hour', size: '100px' },
+                    { field: 'sunday', caption: 'Sunday', size: '100px' },
+                    { field: 'monday', caption: 'Monday', size: '100px' },
+                    { field: 'tuesday', caption: 'Tuesday', size: '100px' },
+                    { field: 'wednesday', caption: 'Wednesday', size: '100px' },
+                    { field: 'thursday', caption: 'Thursday', size: '100px' },
+                    { field: 'friday', caption: 'Friday', size: '100px' },
+                    { field: 'saturday', caption: 'Saturday', size: '100px' }
+                ],
+                records: []
+            });
+
+            // Function to fetch and update the schedule
+            function updateSchedule() {
+                fetch('/api/work-positions')
+                    .then(response => response.json())
+                    .then(workPositions => {
+                        const schedule = new Array(24).fill(0).map(() => new Array(7).fill(0));
+
+                        workPositions.forEach(position => {
+                            position.schedule.forEach(shift => {
+                                for (let hour = shift.startHour; hour < shift.endHour; hour++) {
+                                    schedule[hour][shift.day]++;
+                                }
+                            });
+                        });
+
+                        const records = schedule.map((row, hour) => ({
+                            recid: hour,
+                            hour: `${hour}:00 - ${hour + 1}:00`,
+                            sunday: row[0],
+                            monday: row[1],
+                            tuesday: row[2],
+                            wednesday: row[3],
+                            thursday: row[4],
+                            friday: row[5],
+                            saturday: row[6]
+                        }));
+
+                        w2ui['scheduleGrid'].records = records;
+                        w2ui['scheduleGrid'].refresh();
+                    })
+                    .catch(error => console.error('Error fetching schedule:', error));
+            }
+
+            // Initial update
+            updateSchedule();
+
+            // Update every 5 minutes
+            setInterval(updateSchedule, 5 * 60 * 1000);
+        });
+    </script>
+</body>
+</html>
