@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk Scheduling App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/w2ui/1.5.0/w2ui.min.css">
+    <!-- Updated w2ui CSS link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/w2ui@2.0/w2ui-2.0.min.css">
+    <style>
+        /* Add some basic styling */
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #grid { margin-top: 20px; }
+    </style>
 </head>
 <body>
+    <h1>Helpdesk Scheduling App</h1>
     <div id="grid" style="width: 100%; height: 400px;"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/w2ui/1.5.0/w2ui.min.js"></script>
+    <!-- Updated script sources and order -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/w2ui@2.0/w2ui-2.0.min.js"></script>
     <script>
         $(function () {
             // Initialize the grid
@@ -18,14 +26,14 @@
                 name: 'scheduleGrid',
                 header: 'Weekly Schedule Overview',
                 columns: [
-                    { field: 'hour', caption: 'Hour', size: '100px' },
-                    { field: 'sunday', caption: 'Sunday', size: '100px' },
-                    { field: 'monday', caption: 'Monday', size: '100px' },
-                    { field: 'tuesday', caption: 'Tuesday', size: '100px' },
-                    { field: 'wednesday', caption: 'Wednesday', size: '100px' },
-                    { field: 'thursday', caption: 'Thursday', size: '100px' },
-                    { field: 'friday', caption: 'Friday', size: '100px' },
-                    { field: 'saturday', caption: 'Saturday', size: '100px' }
+                    { field: 'hour',text:"Hour", caption: 'Hour', size: '100px' },
+                    { field: 'sunday',text: 'Sunday', caption: 'Sunday', size: '100px' },
+                    { field: 'monday',text: 'Monday', caption: 'Monday', size: '100px' },
+                    { field: 'tuesday',text: 'Tuesday', caption: 'Tuesday', size: '100px' },
+                    { field: 'wednesday',text: 'Wednesday', caption: 'Wednesday', size: '100px' },
+                    { field: 'thursday', text: 'Thursday', caption: 'Thursday', size: '100px' },
+                    { field: 'friday',text: 'Friday', caption: 'Friday', size: '100px' },
+                    { field: 'saturday',text: 'Saturday', caption: 'Saturday', size: '100px' }
                 ],
                 records: []
             });

@@ -1,6 +1,6 @@
-// server.js
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -11,7 +11,9 @@ mongoose.connect('mongodb://localhost:27017/helpdesk_scheduler', { useNewUrlPars
 
 // Middleware
 app.use(bodyParser.json());
-app.use(express.static('public'));
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Models
 const WorkPosition = mongoose.model('WorkPosition', {
@@ -54,6 +56,11 @@ app.post('/api/employees', async (req, res) => {
   const employee = new Employee(req.body);
   await employee.save();
   res.json(employee);
+});
+
+// Catch-all route to serve the index.html for any unmatched routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 app.listen(PORT, () => {
