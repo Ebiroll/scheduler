@@ -58,6 +58,15 @@ app.post('/api/employees', async (req, res) => {
   res.json(employee);
 });
 
+// New route to get a specific employee's schedule
+app.get('/api/employees/:id/schedule', async (req, res) => {
+  const employee = await Employee.findById(req.params.id).populate('shifts.workPosition');
+  if (!employee) {
+    return res.status(404).json({ message: 'Employee not found' });
+  }
+  res.json(employee.shifts);
+});
+
 // Catch-all route to serve the index.html for any unmatched routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

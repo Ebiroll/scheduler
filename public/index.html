@@ -14,13 +14,55 @@
 </head>
 <body>
     <h1>Helpdesk Scheduling App</h1>
-    <div id="grid" style="width: 100%; height: 400px;"></div>
+    <label for="employeeSelect">Select an employee:</label>
+    <select id="employeeSelect"></select>
+
+    <div id="grid" style="width: 100%; height: 600px;"></div>
+    <div id="employeeScheduleGrid" style="width: 100%; height: 600px; margin-top: 20px;"></div>
 
     <!-- Updated script sources and order -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/w2ui@2.0/w2ui-2.0.min.js"></script>
     <script>
         $(function () {
+            // Function to populate the employee selection dropdown
+            function populateEmployeeSelect() {
+                fetch('/api/employees')
+                    .then(response => response.json())
+                    .then(employees => {
+                        const select = document.getElementById('employeeSelect');
+                        employees.forEach(employee => {
+                            const option = document.createElement('option');
+                            option.value = employee._id;
+                            option.text = employee.name;
+                            select.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching employees:', error));
+            }
+
+            // Function to handle employee selection change
+            function handleEmployeeSelectChange() {
+                const employeeId = document.getElementById('employeeSelect').value;
+                fetch(`/api/employees/${employeeId}/schedule`)
+                    .then(response => response.json())
+                    .then(shifts => {
+                        const employee = {
+                            name: document.getElementById('employeeSelect').options[document.getElementById('employeeSelect').selectedIndex].text,
+                            shifts: shifts
+                        };
+                        initializeEmployeeScheduleGrid(employee);
+                        updateEmployeeSchedule(employee);
+                    })
+                    .catch(error => console.error('Error fetching employee schedule:', error));
+            }
+
+            // Populate the employee selection dropdown
+            populateEmployeeSelect();
+
+            // Add event listener for employee selection change
+            document.getElementById('employeeSelect').addEventListener('change', handleEmployeeSelectChange);
+
             // Initialize the grid
             $('#grid').w2grid({
                 name: 'scheduleGrid',
@@ -37,6 +79,45 @@
                 ],
                 records: []
             });
+
+            // Initialize the grid for a specific employee
+            function initializeEmployeeScheduleGrid(employee) {
+                $('#employeeScheduleGrid').w2grid({
+                    name: 'employeeScheduleGrid',
+                    header: `${employee.name}'s Weekly Schedule`,
+                    columns: [
+                        { field: 'day', caption: 'Day', size: '100px' },
+                        { field: 'hourRange', caption: 'Hour Range', size: '200px' },
+                        { field: 'workPosition', caption: 'Work Position', size: '200px' }
+                    ],
+                    records: []
+                });
+            }
+            // Function to fetch and update the schedule for a specific employee
+            function updateEmployeeSchedule(employee) {
+                // Assuming you have a function to fetch work position details by ID
+                async function fetchWorkPositionDetails(workPositionId) {
+                    // Replace this with your actual API call to fetch work position details
+                    return { name: 'Work Position Name' };
+                }
+
+                const records = employee.shifts.map(async (shift, index) => {
+                    const workPosition = await fetchWorkPositionDetails(shift.workPosition);
+                    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                    return {
+                        recid: index,
+                        day: days[shift.day],
+                        hourRange: `${shift.startHour}:00 - ${shift.endHour}:00`,
+                        workPosition: workPosition.name
+                    };
+                });
+
+                Promise.all(records).then(records => {
+                    w2ui['employeeScheduleGrid'].records = records;
+                    w2ui['employeeScheduleGrid'].refresh();
+                });
+            }
+
 
             // Function to fetch and update the schedule
             function updateSchedule() {
