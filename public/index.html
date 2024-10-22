@@ -97,8 +97,9 @@
             function updateEmployeeSchedule(employee) {
                 // Assuming you have a function to fetch work position details by ID
                 async function fetchWorkPositionDetails(workPositionId) {
-                    // Replace this with your actual API call to fetch work position details
-                    return { name: 'Work Position Name' };
+                    const response = await fetch(`/api/work-positions/${workPositionId}`);
+                    const workPosition = await response.json();
+                    return workPosition;
                 }
 
                 const records = employee.shifts.map(async (shift, index) => {
