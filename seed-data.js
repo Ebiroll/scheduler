@@ -27,6 +27,8 @@ const EmployeeSchema = new mongoose.Schema({
 const WorkPosition = mongoose.model('WorkPosition', WorkPositionSchema);
 const Employee = mongoose.model('Employee', EmployeeSchema);
 
+
+
 // Function to create sample data
 async function createSampleData() {
   // Clear existing data
@@ -58,6 +60,18 @@ async function createSampleData() {
     ]
   });
 
+  const position3 = await WorkPosition.create({
+    name: 'Helpdesk 3',
+    schedule: [
+      { day: 1, startHour: 9, endHour: 12 }, // Monday
+      { day: 2, startHour: 9, endHour: 12 }, // Tuesday
+      { day: 3, startHour: 0, endHour: 0 }, // Wednesday
+      { day: 4, startHour: 0, endHour: 0 }, // Thursday
+      { day: 5, startHour: 0, endHour: 0 }  // Friday
+    ]
+  });
+
+
   // Create employees
   await Employee.create({
     name: 'John Doe',
@@ -65,7 +79,8 @@ async function createSampleData() {
       { workPosition: position1._id, day: 1, startHour: 0, endHour: 8 },
       { workPosition: position1._id, day: 2, startHour: 0, endHour: 8 },
       { workPosition: position1._id, day: 3, startHour: 0, endHour: 8 }
-    ]
+    ],
+    coordinates: [40.73061, -73.935242]
   });
 
   await Employee.create({
@@ -74,8 +89,11 @@ async function createSampleData() {
       { workPosition: position2._id, day: 1, startHour: 9, endHour: 17 },
       { workPosition: position2._id, day: 2, startHour: 9, endHour: 17 },
       { workPosition: position2._id, day: 3, startHour: 9, endHour: 17 }
-    ]
+    ],
+    coordinates: [40.73061, -73.935242]
   });
+
+
 
   console.log('Sample data created successfully');
   mongoose.connection.close();
