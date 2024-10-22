@@ -74,9 +74,9 @@ async function createSampleData() {
 
   // Create employees
   await Employee.create({
-    name: 'John Doe',
+    name: 'Sandra Snygg',
     shifts: [
-      { workPosition: position1._id, day: 1, startHour: 0, endHour: 8 },
+      { workPosition: position1._id, day: 1, startHour: 8, endHour: 12 },
       { workPosition: position1._id, day: 2, startHour: 0, endHour: 8 },
       { workPosition: position1._id, day: 3, startHour: 0, endHour: 8 }
     ],
@@ -84,7 +84,7 @@ async function createSampleData() {
   });
 
   await Employee.create({
-    name: 'Jane Smith',
+    name: 'Olle Bichon',
     shifts: [
       { workPosition: position2._id, day: 1, startHour: 9, endHour: 17 },
       { workPosition: position2._id, day: 2, startHour: 9, endHour: 17 },
