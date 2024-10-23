@@ -103,7 +103,7 @@
                 }
 
                 const records = employee.shifts.map(async (shift, index) => {
-                    const workPosition = await fetchWorkPositionDetails(shift.workPosition);
+                    const workPosition = await fetchWorkPositionDetails(shift.workPosition._id);
                     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                     return {
                         recid: index,
