@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Locations Map</title>
+
+</head>
+<body>
+<div id="dialog-message">
+<p id="ctext"></p>
+<!--<span class="ui-icon ui-icon-circle-check" style="float: left; margin: 0 7px 50px 0;"></span>!-->
+<img id="found-chicken" src = "" style ="float: left;width:0px; height:0px;"></img>
+</div>
+	<div id="map" style="width: 500px; height: 650px"></div>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+	<script>
+        var map;
+$(function() {
+        
+	// check whether browser supports geolocation api
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(positionSuccess, positionError, { enableHighAccuracy: true });
+	} else {
+		$('.map').text('Your browser is out of fashion, there\'s no geolocation!');
+	}
+
+	function positionSuccess(position) {
+		var lat = position.coords.latitude;
+		var lng = position.coords.longitude;
+		var acr = position.coords.accuracy;
+
+		// mark user's position
+		//var userMarker = L.marker([lat, lng], {
+		//	icon: userIcon
+		//});
+
+		// uncomment for static debug
+		// https://{s}.tiles.mapbox.com/v4/olof-astrand.i90p08cm/{z}/{x}/{y}.png
+		// load leaflet map
+        map = L.map('map').setView([59.4232389, 17.8295509], 13);
+				
+
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a>'
+			//	contributors, ' + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			//	'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+		}).addTo(map);
+
+
+		//L.circle([59.4232389, 17.8295509], 50, {
+		//	color: 'orange',
+		//	fillColor: '#f03',
+		//	fillOpacity: 0.5
+		//}).addTo(map).bindPopup("I am a circle.");
+
+                		
+		var popup = L.popup();
+
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("You clicked the map at " + e.latlng.toString())
+				.openOn(map);
+		}
+
+	doc.bind('mouseup mouseleave', function() {
+		active = false;
+	});
+
+})
+				
+	</script>
+	    <div style="position: fixed; bottom: 10px; left: 40%; transform: translateX(-50%); width: 80%; max-width: 500px; z-index: 1000;">
+			<input type="text" id="chatInput" placeholder="Type a message..." style="width: 80%; padding: 10px; font-size: 16px;">
+			<button onclick="sendMessage()" style="width: 19%; padding: 10px; font-size: 16px;">Send</button>
+			<div id="messages" style="height: 100px; overflow-y: auto; background: rgba(255, 255, 255, 0.8); margin-top: 5px; padding: 5px;">
+				<!-- Messages will appear here -->
+			</div>
+		</div>    	
+</body>
+</html>
