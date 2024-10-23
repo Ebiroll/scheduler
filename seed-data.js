@@ -20,14 +20,13 @@ const EmployeeSchema = new mongoose.Schema({
     day: Number,
     startHour: Number,
     endHour: Number
-  }]
+  }],
+  coordinates: [Number]
 });
 
 // Create models
 const WorkPosition = mongoose.model('WorkPosition', WorkPositionSchema);
 const Employee = mongoose.model('Employee', EmployeeSchema);
-
-
 
 // Function to create sample data
 async function createSampleData() {
@@ -71,7 +70,6 @@ async function createSampleData() {
     ]
   });
 
-
   // Create employees
   await Employee.create({
     name: 'Sandra Snygg',
@@ -92,8 +90,6 @@ async function createSampleData() {
     ],
     coordinates: [40.73061, -73.935242]
   });
-
-
 
   console.log('Sample data created successfully');
   mongoose.connection.close();

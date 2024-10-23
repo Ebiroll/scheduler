@@ -32,7 +32,8 @@ const Employee = mongoose.model('Employee', {
     day: Number,
     startHour: Number,
     endHour: Number
-  }]
+  }],
+  coordinates: [Number]
 });
 
 // Routes
@@ -80,6 +81,17 @@ app.get('/api/work-positions/:id', async (req, res) => {
 app.get('/api/schedule', async (req, res) => {
   const schedule = await WorkPosition.find({}, 'name schedule');
   res.json(schedule);
+});
+
+// New route to get employee coordinates
+app.get('/api/employee-coordinates', async (req, res) => {
+  const employees = await Employee.find({}, 'name coordinates');
+  res.json(employees);
+});
+
+// Serve the map.html file for the /map route
+app.get('/map', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'map.html'));
 });
 
 // Catch-all route to serve the index.html for any unmatched routes
