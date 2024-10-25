@@ -59,6 +59,11 @@ const Employee = mongoose.model('Employee', {
   coordinates: [Number]
 });
 
+const SmsLog = mongoose.model('SmsLog', {
+  message: String,
+  timestamp: { type: Date, default: Date.now }
+});
+
 // Routes
 app.get('/api/work-positions', async (req, res) => {
   const workPositions = await WorkPosition.find();
@@ -200,6 +205,14 @@ app.post('/api/notify', async (req, res) => {
     console.error('Error sending notification:', error);
     res.status(500).json({ error: 'Failed to send notification' });
   }
+});
+
+// New route to handle storing SMS logs
+app.post('/api/sms-log', async (req, res) => {
+  const { message } = req.body;
+  const smsLog = new SmsLog({ message });
+  await smsLog.save();
+  res.json(smsLog);
 });
 
 // Catch-all route to serve the index.html for any unmatched routes
