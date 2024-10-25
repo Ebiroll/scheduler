@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import DraggableTodoList from './components/DraggableTodoList';
 import AddTodo from './components/AddTodo';
+import SmsComponent from './components/SmsComponent'; // P6e84
 
 function App() {
   console.log('App component is rendering');
@@ -61,6 +62,7 @@ function App() {
       <h1 className="mt-4 mb-4">AI Scheduler</h1>
       <AddTodo addTodo={addTodo} />
       <DraggableTodoList todos={todos} toggleTodo={toggleTodo} onDragEnd={onDragEnd} />
+      <SmsComponent /> {/* P6e84 */}
     </div>
   );
 }

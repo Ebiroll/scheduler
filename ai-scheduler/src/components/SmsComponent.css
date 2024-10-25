@@ -1,0 +1,36 @@
+#smsDiv {
+  width: 28%;
+  margin-left: 2%;
+}
+
+#smsDiv h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+#smsDiv label {
+  font-weight: bold;
+}
+
+#smsDiv input[type="text"],
+#smsDiv textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#smsDiv button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#smsDiv button:hover {
+  background-color: #0056b3;
+}
