@@ -24,8 +24,21 @@
     <div id="grid" style="width: 100%; height: 600px;"></div>
     
     -->
-    <div id="employeeScheduleGrid" style="width: 100%; height: 600px; margin-top: 20px;"></div>
-
+    <div style="display: flex; margin-top: 20px;">
+        <div id="employeeScheduleGrid" style="width: 70%; height: 600px;"></div>
+        <div id="smsDiv" style="width: 28%; margin-left: 2%;">
+          <h2>Send SMS</h2>
+          <div>
+            <label for="smsMessage">Message to send:</label>
+            <input type="text" id="smsMessage" name="smsMessage" style="width: 100%; margin-bottom: 10px;">
+          </div>
+          <div>
+            <label for="smsLog">Message Log:</label>
+            <textarea id="smsLog" name="smsLog" rows="8" style="width: 100%; margin-bottom: 10px;" readonly></textarea>
+          </div>
+          <button id="sendSmsButton" style="width: 100%;">Send SMS</button>
+        </div>
+    </div>  
     <!-- New input and button for sending notifications -->
     <div style="margin-top: 20px;">
         <label for="notificationInput">Send a notification:</label>
