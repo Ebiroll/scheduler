@@ -19,7 +19,8 @@ const EmployeeSchema = new mongoose.Schema({
     workPosition: { type: mongoose.Schema.Types.ObjectId, ref: 'WorkPosition' },
     day: Number,
     startHour: Number,
-    endHour: Number
+    endHour: Number,
+    confirmed: Number
   }],
   coordinates: [Number]
 });
@@ -64,7 +65,7 @@ async function createSampleData() {
     schedule: [
       { day: 1, startHour: 9, endHour: 12 }, // Monday
       { day: 2, startHour: 9, endHour: 12 }, // Tuesday
-      { day: 3, startHour: 0, endHour: 0 }, // Wednesday
+      { day: 3, startHour: 9, endHour: 12 }, // Wednesday
       { day: 4, startHour: 0, endHour: 0 }, // Thursday
       { day: 5, startHour: 0, endHour: 0 }  // Friday
     ]
@@ -72,21 +73,34 @@ async function createSampleData() {
 
   // Create employees
   await Employee.create({
-    name: 'Sandra Snygg',
+    name: 'Olof Astrand',
     shifts: [
-      { workPosition: position1._id, day: 1, startHour: 8, endHour: 12 },
-      { workPosition: position1._id, day: 2, startHour: 0, endHour: 8 },
-      { workPosition: position1._id, day: 3, startHour: 0, endHour: 8 }
+      { workPosition: position1._id, day: 1, startHour: 8, endHour: 12 , confirmed: 1 },
+      { workPosition: position1._id, day: 2, startHour: 9, endHour: 17 , confirmed: 0},
+      { workPosition: position1._id, day: 3, startHour: 9, endHour: 17 , confirmed: 1}
     ],
     coordinates: [40.73061, -73.935242]
   });
 
   await Employee.create({
-    name: 'Olle Bichon',
+    name: 'Smaland Jonsson',
     shifts: [
-      { workPosition: position2._id, day: 1, startHour: 9, endHour: 17 },
-      { workPosition: position2._id, day: 2, startHour: 9, endHour: 17 },
-      { workPosition: position2._id, day: 3, startHour: 9, endHour: 17 }
+      { workPosition: position2._id, day: 1, startHour: 9, endHour: 17 , confirmed: 1},
+      { workPosition: position2._id, day: 2, startHour: 9, endHour: 17 , confirmed: 1},
+      { workPosition: position2._id, day: 3, startHour: 9, endHour: 17 , confirmed: 1}
+    ],
+    coordinates: [40.73061, -73.935242]
+  });
+
+  await Employee.create({
+    name: 'Nisse Jonsson',
+    shifts: [
+      { workPosition: position2._id, day: 1, startHour: 9, endHour: 17 , confirmed: 1},
+      { workPosition: position2._id, day: 2, startHour: 9, endHour: 17 , confirmed: 1},
+      { workPosition: position2._id, day: 3, startHour: 9, endHour: 17 , confirmed: 1},
+      { workPosition: position2._id, day: 4, startHour: 9, endHour: 17 , confirmed: 1},
+      { workPosition: position2._id, day: 5, startHour: 9, endHour: 17 , confirmed: 1}
+
     ],
     coordinates: [40.73061, -73.935242]
   });

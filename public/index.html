@@ -13,11 +13,17 @@
     </style>
 </head>
 <body>
-    <h1>Helpdesk Scheduling App</h1>
+    <h1>Send Mess</h1>
+
+    
     <label for="employeeSelect">Select an employee:</label>
     <select id="employeeSelect"></select>
+    <button onclick="sendSchedule()">Send Schedule</button>
 
+    <!--
     <div id="grid" style="width: 100%; height: 600px;"></div>
+    
+    -->
     <div id="employeeScheduleGrid" style="width: 100%; height: 600px; margin-top: 20px;"></div>
 
     <!-- New input and button for sending notifications -->
@@ -93,9 +99,10 @@
                     name: 'employeeScheduleGrid',
                     header: `${employee.name}'s Weekly Schedule`,
                     columns: [
-                        { field: 'day', caption: 'Day', size: '100px' },
-                        { field: 'hourRange', caption: 'Hour Range', size: '200px' },
-                        { field: 'workPosition', caption: 'Work Position', size: '200px' }
+                        { field: 'day',text: 'day', caption: 'Day', size: '100px' },
+                        { field: 'hourRange', text:  'hours', caption: 'Hour Range', size: '200px' },
+                        { field: 'workPosition', text:  'Position', caption: 'Work Position', size: '200px' },
+                        { field: 'Confirmed', text:  'Confirmed', caption: 'Confirmed', size: '200px' },
                     ],
                     records: []
                 });
@@ -124,6 +131,20 @@
                     w2ui['employeeScheduleGrid'].records = records;
                     w2ui['employeeScheduleGrid'].refresh();
                 });
+            }
+            function sendSchedule() {
+                const employeeId = document.getElementById('employeeSelect').value;
+                post(`/api/send-schedule:${employeeId}`)
+                    .then(response => response.json())
+                    .then(shifts => {
+                        const employee = {
+                            name: document.getElementById('employeeSelect').options[document.getElementById('employeeSelect').selectedIndex].text,
+                            shifts: shifts
+                        };
+                        initializeEmployeeScheduleGrid(employee);
+                        updateEmployeeSchedule(employee);
+                    })
+                    .catch(error => console.error('Error fetching employee schedule:', error));
             }
 
 
